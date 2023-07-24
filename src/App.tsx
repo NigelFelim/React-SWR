@@ -1,8 +1,8 @@
 import { Route, Routes } from "react-router-dom"
 import Layout from "./layout/Layout"
-import DashboardPage from "./features/dashboard/DashboardPage"
-import TodosPage from "./features/todos/TodosPage"
-import PostsPage from "./features/posts/PostsPage"
+import DashboardPage from "./features/dashboard/components/DashboardPage"
+import TodosPage from "./features/todos/components/TodosPage"
+import PostsPage from "./features/posts/components/PostsPage"
 
 function App() {
   return (
