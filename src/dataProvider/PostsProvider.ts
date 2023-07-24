@@ -3,7 +3,7 @@ import BaseUrl from "./BaseUrl";
 import { GetPostsListModelPack } from "../model/posts/GetPostsListModel";
 import CreateOrUpdatePostModel from "../model/posts/CreateOrUpdatePostModel";
 
-const delay = () => new Promise<void>(res => setTimeout(() => res(), 5000))
+const delay = () => new Promise<void>(res => setTimeout(() => res(), 1000))
 
 const PostsProvider = {
     getList: async () => {
