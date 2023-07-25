@@ -29,11 +29,13 @@ const TodosPage: React.FC = () => {
             <div className="flex flex-row-reverse w-full mb-7">
                 <button className="bg-blue-800 text-white" onClick={() => setOpenDialog(true)}>Add New To Do</button>
             </div>
-            {
-                todosData.length > 0 && todosData.map((item, index) => 
-                    <TodoCard key={index} data={item} />
-                )
-            }
+            <div className="overflow-auto h-[62vh]">
+                {
+                    todosData.length > 0 && todosData.map((item, index) => 
+                        <TodoCard key={index} data={item} />
+                    )
+                }
+            </div>
         </div>
 
         <TodoForm dialogTitle="Tambah To Do Baru" open={openDialog} onClose={() => setOpenDialog(false)} onSubmit={onSubmit} />
