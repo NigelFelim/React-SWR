@@ -1,15 +1,13 @@
 import { AxiosResponse } from "axios";
-import { GetTodosListModelPack } from "../model/todos/GetTodosListModel";
+import { GetTodosListModelData, GetTodosListModelPack } from "../model/todos/GetTodosListModel";
 import BaseUrl from "./BaseUrl";
 import CreateOrUpdateTodoModel from "../model/todos/CreateOrUpdateTodoModel";
 
-const delay = () => new Promise<void>(res => setTimeout(() => res(), 1000))
+const delay = () => new Promise<void>(res => setTimeout(() => res(), 5000))
 
 const TodosProvider = {
     getList: async () => {
         // Coba pakai pagination dan search setelah berhasil implementasi dan paham dengan SWR
-        await delay();
-
         try {
             const result: AxiosResponse = await BaseUrl.get("/todos");
 
@@ -26,9 +24,15 @@ const TodosProvider = {
         if (Math.random() < 0.5) return Promise.reject("Gagal Menambahkan Data")
 
         try {
-            await BaseUrl.post("/todos", newData);
+            // Returnnya object/JSON yang isinya adalah newData + id baru
+            const result: AxiosResponse = await BaseUrl.post("/todos", newData);
 
-            return Promise.resolve();
+            const resultData: GetTodosListModelData = new GetTodosListModelData(result.data);
+
+            console.log(result);
+            console.log(resultData);
+
+            return Promise.resolve(resultData);
         } catch (error) {
             return Promise.reject(error)
         }
@@ -39,9 +43,15 @@ const TodosProvider = {
         if (Math.random() < 0.5) return Promise.reject("Gagal Mengubah Data")
 
         try {
-            await BaseUrl.put(`/todos/${id}`, updatedData);
+            // Returnnya object/JSON yang isinya adalah newData + id baru
+            const result: AxiosResponse = await BaseUrl.put(`/todos/${id}`, updatedData);
 
-            return Promise.resolve();
+            const resultData: GetTodosListModelData = new GetTodosListModelData(result.data);
+
+            console.log(result);
+            console.log(resultData);
+
+            return Promise.resolve(resultData);
         } catch (error) {
             return Promise.reject(error)
         }
@@ -52,6 +62,7 @@ const TodosProvider = {
         if (Math.random() < 0.5) return Promise.reject("Gagal Menghapus Data")
 
         try {
+            // Returnnya object/JSON kosong
             await BaseUrl.delete(`/todos/${id}`);
 
             return Promise.resolve();
