@@ -43,6 +43,7 @@ const PostsProvider = {
         if (Math.random() < 0.5) return Promise.reject("Gagal Mengubah Data")
 
         try {
+            // Returnnya object/JSON yang isinya adalah newData
             const result: AxiosResponse = await BaseUrl.put(`/posts/${id}`, updatedData);
 
             const resultData: GetPostsListModelData = new GetPostsListModelData(result.data);

@@ -41,8 +41,6 @@ const PostsPage: React.FC = () => {
             setOpenDialog(false);
             setOpenFailedAlert(true);
         }
-
-        setOpenDialog(false);
     }
 
     return (
