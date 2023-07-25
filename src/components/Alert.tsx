@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect } from "react";
 import { MdClose } from "react-icons/md";
 
 interface Props {
+    key?: any;
     title: string;
     content: string;
     open: boolean;
