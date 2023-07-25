@@ -8,8 +8,6 @@ const delay = () => new Promise<void>(res => setTimeout(() => res(), 5000))
 const PostsProvider = {
     getList: async () => {
         // Coba pakai pagination dan search setelah berhasil implementasi dan paham dengan SWR
-        await delay();
-
         try {
             const result: AxiosResponse = await BaseUrl.get("/posts");
             
@@ -26,9 +24,10 @@ const PostsProvider = {
         if (Math.random() < 0.5) return Promise.reject("Gagal Menambahkan Data")
 
         try {
+            // Returnnya object/JSON yang isinya adalah newData + id baru
             const result: AxiosResponse = await BaseUrl.post("/posts", newData);
 
-            const resultData: GetPostsListModelData = new GetPostsListModelData(result);
+            const resultData: GetPostsListModelData = new GetPostsListModelData(result.data);
 
             console.log(result);
             console.log(resultData);
@@ -44,9 +43,14 @@ const PostsProvider = {
         if (Math.random() < 0.5) return Promise.reject("Gagal Mengubah Data")
 
         try {
-            await BaseUrl.put(`/posts/${id}`, updatedData);
+            const result: AxiosResponse = await BaseUrl.put(`/posts/${id}`, updatedData);
 
-            return Promise.resolve();
+            const resultData: GetPostsListModelData = new GetPostsListModelData(result.data);
+
+            console.log(result);
+            console.log(resultData);
+
+            return Promise.resolve(resultData);
         } catch (error) {
             return Promise.reject(error)
         }
@@ -57,6 +61,7 @@ const PostsProvider = {
         if (Math.random() < 0.5) return Promise.reject("Gagal Menghapus Data")
 
         try {
+            // Returnnya object/JSON kosong
             await BaseUrl.delete(`/posts/${id}`);
 
             return Promise.resolve();

@@ -20,12 +20,16 @@ const useAddPost = () => {
             setAddLoading(false);
 
             // Tipe data yang di return disamakan dengan data yang di return dari fungsi get list (jika list, maka data dari sini harus
-            // balikin list). Data yang di return (isinya), disamakan dengan data yang di bagian "otimisticData" pada "options".
+            // balikin list). Perlu seperti itu karena function ini masuk ke dalam mutate() nya Get List sehingga perlu disesuaikan.
+            //  Data yang di return (isinya), disamakan dengan data yang di bagian "otimisticData" pada "options".
             // Jika tidak disamakan pada dua hal yang disebut diatas, maka saat revalidate akan error
             if (!oldPosts) {
                 return Promise.resolve([result])
             } else {
                 return Promise.resolve([...oldPosts, result]);
+
+                // Bisa juga pake bentuk yang kayak dicomment ini
+                // return Promise.resolve([...oldPosts, {title: newPost.title, body: newPost.body}]);
             }
         } catch (error) {
             setAddError(error);
@@ -44,7 +48,7 @@ export const addNewPostOptions = (newPost: CreateOrUpdatePostModel, oldPosts: Ge
             rollbackOnError: true,
             populateCache: true,
             revalidate: false
-        }
+        };
     }
     
     return {
@@ -52,7 +56,7 @@ export const addNewPostOptions = (newPost: CreateOrUpdatePostModel, oldPosts: Ge
         rollbackOnError: true,
         populateCache: true,
         revalidate: false
-    }
+    };
 }
 
 export default useAddPost;
