@@ -29,7 +29,13 @@ export default {
           '95%': { top: "80px" },
           '100%': { top: "0px" },
         }
-      }
+      },
+      colors: {
+        "blueFocus": "#9ECAED"
+      },
+      boxShadow: {
+        "inputFocus": "0 0 10px #9ecaed"
+      },
     },
   },
   plugins: [],
