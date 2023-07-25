@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Dialog from "../../../components/Dialog";
 import { Controller, RegisterOptions, useForm } from "react-hook-form";
 import { GetTodosListModelData } from "../../../model/todos/GetTodosListModel";
@@ -14,12 +14,9 @@ interface Props {
 }
 
 const TodoForm: React.FC<Props> = (props) => {
-    const { register, handleSubmit, control, reset } = useForm<CreateOrUpdateTodoModel>({
-        defaultValues: {
-            "title": props.data ? props.data.title : "",
-            "completed": props.data ? props.data.isCompleted : false
-        }
-    });
+    const [checked, setChecked] = useState<boolean>(false);
+
+    const { register, handleSubmit, control, reset } = useForm<CreateOrUpdateTodoModel>();
     
     const titleRules: RegisterOptions = {
         required: {
@@ -45,6 +42,10 @@ const TodoForm: React.FC<Props> = (props) => {
         reset();
     }
 
+    useEffect(() => {
+        setChecked(props.data ? props.data.isCompleted : false);
+    }, [props.data])
+
     return (
         <Dialog open={props.open} dialogTitle="Tambah To Do Baru">
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -64,7 +65,7 @@ const TodoForm: React.FC<Props> = (props) => {
                     )}
                 />
                 <div className="ml-1 flex items-center gap-3 mb-5">
-                    <input {...register("completed")} type="checkbox" className="rounded-sm w-4 h-4" />
+                    <input {...register("completed")} type="checkbox" checked={checked} onClick={() => setChecked(!checked)} className="rounded-sm w-4 h-4" />
                     <label>Completed</label>
                 </div>
                 <div className="flex items-center justify-content w-full gap-3">
