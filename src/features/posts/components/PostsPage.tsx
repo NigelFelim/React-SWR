@@ -20,6 +20,12 @@ const PostsPage: React.FC = () => {
     // Umumnya ini adalah function Get List karena setelah sukses Add/Update/Delete akan meng-update si List
     // Intinya ini hooks untuk handle Data Fetching
     const { data: posts, mutate } = useSWR("/posts", getPostsListData)
+    // mutate gunanya untuk revalidate data. mutate pada hook useSWR berarti akan melakukan revalidate pada SWR ini.
+    // Pada hook useSWRConfig, itu ada juga mutate. Bedanya, mutate pada hook tersebut bisa kita passing key.
+    // Gunanya key yang dipassing untuk memfilter SWR (cache) mana yang perlu di revalidate
+
+    // Ada pula hook useSWRMutation. Bedanya dengan useSWR dan useSWRConfig adalah hook ini di trigger manual dengan fungsi trigger
+    // yang disediakan useSWRMutation dan bisa diakses dengan melakukan destructured
 
     const onSubmit = async (formData: CreateOrUpdatePostModel) => {
         try {

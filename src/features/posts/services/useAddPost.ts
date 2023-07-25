@@ -48,6 +48,8 @@ export const addNewPostOptions = (newPost: CreateOrUpdatePostModel, oldPosts: Ge
             rollbackOnError: true,
             populateCache: true,
             revalidate: false
+            // "revalidate" di set false karena pada PostPage.tsx, data pada Get List sudah di revalidate ketika function
+            // add/update/delete selesai dieksekusi (baik gagal maupun berhasil)
         };
     }
     
@@ -56,6 +58,8 @@ export const addNewPostOptions = (newPost: CreateOrUpdatePostModel, oldPosts: Ge
         rollbackOnError: true,
         populateCache: true,
         revalidate: false
+        // "revalidate" di set false karena pada PostPage.tsx, data pada Get List sudah di revalidate ketika function
+        // add/update/delete selesai dieksekusi (baik gagal maupun berhasil)
     };
 }
 
