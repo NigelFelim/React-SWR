@@ -1,35 +1,41 @@
-import React, { useState, useEffect } from "react";
-import { GetPostsListModelData } from "../../../model/posts/GetPostsListModel";
+import React, { useState } from "react";
 import useGetPostsList from "../services/useGetPostsList";
 import PostCard from "./PostCard";
 import CreateOrUpdatePostModel from "../../../model/posts/CreateOrUpdatePostModel";
 import PostForm from "./PostForm";
-import useAddPost from "../services/useAddPost";
+import useAddPost, { addNewPostOptions } from "../services/useAddPost";
 import Alert from "../../../components/Alert";
+import useSWR from "swr";
+import SuccessAlert from "../../../components/SuccessAlert";
 
 const PostsPage: React.FC = () => {
     const { addNewPost } = useAddPost();
 
-    const [postsData, setPostsData] = useState<GetPostsListModelData[]>([]);
     const [openDialog, setOpenDialog] = useState<boolean>(false);
-    const [openAlert, setOpenAlert] = useState<boolean>(false);
+    const [openFailedAlert, setOpenFailedAlert] = useState<boolean>(false);
+    const [openSuccessAlert, setOpenSuccessAlert] = useState<boolean>(false);
 
-    const { data } = useGetPostsList();
+    const { getPostsListData } = useGetPostsList();
+
+    const { data: posts, mutate } = useSWR("/posts", getPostsListData)
 
     const onSubmit = async (formData: CreateOrUpdatePostModel) => {
         try {
-            addNewPost(formData)
+            setOpenDialog(false);
+
+            await mutate(
+                addNewPost(formData, posts),
+                addNewPostOptions(formData, posts),
+            );
+
+            setOpenSuccessAlert(true);
         } catch (error) {
             setOpenDialog(false);
-            setOpenAlert(true);
+            setOpenFailedAlert(true);
         }
 
         setOpenDialog(false);
     }
-
-    useEffect(() => {
-        if (data) setPostsData(data);
-    }, [data])
 
     return (
         <>
@@ -38,16 +44,20 @@ const PostsPage: React.FC = () => {
             <div className="flex flex-row-reverse w-full mb-7">
                 <button type="button" className="bg-blue-800 text-white" onClick={() => setOpenDialog(true)}>Add New To Do</button>
             </div>
-            {
-                postsData.length > 0 && postsData.map((item, index) => 
-                    <PostCard key={index} data={item} />
-                )
-            }
+            <div className="overflow-auto h-[62vh]">
+                {
+                    posts && posts.length > 0 && posts.map((item, index) => 
+                        <PostCard key={index} data={item} />
+                    )
+                }
+            </div>
         </div>
 
         <PostForm dialogTitle="Tambah Post Baru" open={openDialog} onClose={() => setOpenDialog(false)} onSubmit={onSubmit} />
 
-        <Alert open={openAlert} handleClose={() => setOpenAlert(false)} title="Gagal" content="Gagal Menambahkan Data" />
+        <Alert open={openFailedAlert} handleClose={() => setOpenFailedAlert(false)} title="Gagal" content="Gagal Menambahkan Data" />
+
+        <SuccessAlert open={openSuccessAlert} handleClose={() => setOpenSuccessAlert(false)} title="Berhasil" content="Berhasil Menambahkan Data" />
         </>
     );
 }
