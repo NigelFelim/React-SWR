@@ -18,6 +18,7 @@ const PostsPage: React.FC = () => {
     const { getPostsListData } = useGetPostsList();
 
     // Umumnya ini adalah function Get List karena setelah sukses Add/Update/Delete akan meng-update si List
+    // Intinya ini hooks untuk handle Data Fetching
     const { data: posts, mutate } = useSWR("/posts", getPostsListData)
 
     const onSubmit = async (formData: CreateOrUpdatePostModel) => {
