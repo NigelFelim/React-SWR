@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { GetTodosListModelData } from "../../../model/todos/GetTodosListModel";
+import React, { useState } from "react";
 import useGetTodosList from "../services/useGetTodosList";
 import TodoCard from "./TodoCard";
 import TodoForm from "./TodoForm";
@@ -7,6 +6,7 @@ import CreateOrUpdateTodoModel from "../../../model/todos/CreateOrUpdateTodoMode
 import Alert from "../../../components/Alert";
 import SuccessAlert from "../../../components/SuccessAlert";
 import useSWR from "swr";
+import useAddTodo, { addNewTodoOptions } from "../services/useAddTodo";
 
 const TodosPage: React.FC = () => {
     const [openDialog, setOpenDialog] = useState<boolean>(false);
@@ -14,6 +14,7 @@ const TodosPage: React.FC = () => {
     const [openSuccessAlert, setOpenSuccessAlert] = useState<boolean>(false);
 
     const { getTodosDataList } = useGetTodosList();
+    const { addNewTodo } = useAddTodo();
 
     const { data: todos, mutate } = useSWR("/todos", getTodosDataList);
 
@@ -22,7 +23,8 @@ const TodosPage: React.FC = () => {
             setOpenDialog(false);
 
             await mutate(
-
+                addNewTodo(formData, todos),
+                addNewTodoOptions(formData, todos),
             );
 
             setOpenSuccessAlert(true);
