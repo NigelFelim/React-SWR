@@ -5,22 +5,32 @@ import TodoCard from "./TodoCard";
 import TodoForm from "./TodoForm";
 import CreateOrUpdateTodoModel from "../../../model/todos/CreateOrUpdateTodoModel";
 import Alert from "../../../components/Alert";
+import SuccessAlert from "../../../components/SuccessAlert";
+import useSWR from "swr";
 
 const TodosPage: React.FC = () => {
-    const [todosData, setTodosData] = useState<GetTodosListModelData[]>([]);
     const [openDialog, setOpenDialog] = useState<boolean>(false);
-    const [openAlert, setOpenAlert] = useState<boolean>(false);
+    const [openFailedAlert, setOpenFailedAlert] = useState<boolean>(false);
+    const [openSuccessAlert, setOpenSuccessAlert] = useState<boolean>(false);
 
-    const { data } = useGetTodosList();
+    const { getTodosDataList } = useGetTodosList();
 
-    const onSubmit = (formData: CreateOrUpdateTodoModel) => {
-        console.log(formData);
-        setOpenDialog(false);
+    const { data: todos, mutate } = useSWR("/todos", getTodosDataList);
+
+    const onSubmit = async (formData: CreateOrUpdateTodoModel) => {
+        try {
+            setOpenDialog(false);
+
+            await mutate(
+
+            );
+
+            setOpenSuccessAlert(true);
+        } catch (error) {
+            setOpenDialog(false);
+            setOpenFailedAlert(true);
+        }
     }
-
-    useEffect(() => {
-        if (data) setTodosData(data);
-    }, [data])
 
     return (
         <>
@@ -31,7 +41,7 @@ const TodosPage: React.FC = () => {
             </div>
             <div className="overflow-auto h-[62vh]">
                 {
-                    todosData.length > 0 && todosData.map((item, index) => 
+                    todos && todos.length > 0 && todos.map((item, index) => 
                         <TodoCard key={index} data={item} />
                     )
                 }
@@ -40,7 +50,9 @@ const TodosPage: React.FC = () => {
 
         <TodoForm dialogTitle="Tambah To Do Baru" open={openDialog} onClose={() => setOpenDialog(false)} onSubmit={onSubmit} />
 
-        <Alert open={openAlert} handleClose={() => setOpenAlert(false)} title="Gagal" content="Gagal Menambahkan Data" />
+        <Alert open={openFailedAlert} handleClose={() => setOpenFailedAlert(false)} title="Gagal" content="Gagal Menambahkan Data" />
+
+        <SuccessAlert open={openSuccessAlert} handleClose={() => setOpenSuccessAlert(false)} title="Berhasil" content="Berhasil Menambahkan Data" />
         </>
     );
 }
