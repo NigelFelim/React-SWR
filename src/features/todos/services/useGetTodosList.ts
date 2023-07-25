@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { GetTodosListModelData, GetTodosListModelPack } from "../../../model/todos/GetTodosListModel";
 import TodosProvider from "../../../dataProvider/TodosProvider";
 
@@ -8,28 +8,28 @@ const useGetTodosList = () => {
     const [getLoading, setGetLoading] = useState<boolean>(false);
     const [getError, setGetError] = useState<any>(null);
 
-    useEffect(() => {
-        async function getData() {
-            try {
-                setGetError(null);
-                setGetLoading(true);
+    const getTodosDataList = async () => {
+        try {
+            setGetError(null);
+            setGetLoading(true);
 
-                const result : GetTodosListModelPack | undefined = await TodosProvider.getList();
-                const resultData = result as GetTodosListModelPack;
+            const result : GetTodosListModelPack | undefined = await TodosProvider.getList();
+            const resultData = result as GetTodosListModelPack;
 
-                setTodosData(resultData.data);
-                
-                setGetLoading(false);
-            } catch (error) {
-                setGetError(error);
-                setGetLoading(false);
-            }
+            setTodosData(resultData.data);
+            
+            setGetLoading(false);
+
+            return Promise.resolve(resultData.data);
+        } catch (error) {
+            setTodosData([]);
+            setGetError(error);
+            setGetLoading(false);
+            return Promise.reject(error);
         }
+    }
 
-        getData();
-    }, [])
-
-    return { data, getLoading, getError }
+    return { getTodosDataList, data, getLoading, getError }
 }
 
 export default useGetTodosList;

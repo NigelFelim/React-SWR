@@ -14,7 +14,12 @@ interface Props {
 }
 
 const TodoForm: React.FC<Props> = (props) => {
-    const { register, handleSubmit, control, reset } = useForm<CreateOrUpdateTodoModel>();
+    const { register, handleSubmit, control, reset } = useForm<CreateOrUpdateTodoModel>({
+        defaultValues: {
+            "title": props.data ? props.data.title : "",
+            "completed": props.data ? props.data.isCompleted : false
+        }
+    });
     
     const titleRules: RegisterOptions = {
         required: {
