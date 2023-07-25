@@ -6,16 +6,27 @@ import CreateOrUpdateTodoModel from "../model/todos/CreateOrUpdateTodoModel";
 const delay = () => new Promise<void>(res => setTimeout(() => res(), 5000))
 
 const TodosProvider = {
-    getList: async () => {
+    getList: async (page: number) => {
         // Coba pakai pagination dan search setelah berhasil implementasi dan paham dengan SWR
+        // await delay();
+
+        console.log("TEST MASUK")
+        console.log(page)
+        console.log(typeof(page))
+
         try {
-            const result: AxiosResponse = await BaseUrl.get("/todos");
+            if (typeof(page) === "number" && page > 0) {
+                const result: AxiosResponse = await BaseUrl.get(`/todos?_limit=2&_page=${page}`);
 
-            const todosData: GetTodosListModelPack = new GetTodosListModelPack(result);
+                const todosData: GetTodosListModelPack = new GetTodosListModelPack(result);
 
-            return Promise.resolve(todosData);
+                return Promise.resolve(todosData);
+            } else {
+                console.log("ERROR")
+                return Promise.reject("Page kurang dari 1")
+            }
         } catch (error) {
-            return Promise.reject(error)
+            return Promise.reject("Page kurang dari 1")
         }
     },
     addNewTodo: async (newData: CreateOrUpdateTodoModel) => {

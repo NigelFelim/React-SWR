@@ -8,12 +8,12 @@ const useGetTodosList = () => {
     const [getLoading, setGetLoading] = useState<boolean>(false);
     const [getError, setGetError] = useState<any>(null);
 
-    const getTodosDataList = async () => {
+    const getTodosDataList = async (page: number) => {
         try {
             setGetError(null);
             setGetLoading(true);
 
-            const result : GetTodosListModelPack | undefined = await TodosProvider.getList();
+            const result : GetTodosListModelPack | undefined = await TodosProvider.getList(page);
             const resultData = result as GetTodosListModelPack;
 
             setTodosData(resultData.data);
