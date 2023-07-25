@@ -1,6 +1,6 @@
 interface CreateOrUpdatePostModel {
     title: string;
-    body: boolean;
+    body: string;
 }
 
 export default CreateOrUpdatePostModel;
