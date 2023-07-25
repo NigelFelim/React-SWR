@@ -23,7 +23,7 @@ const TodosPage: React.FC = () => {
     // Contoh: const { data: todos, mutate, isLoading, error } = useSWR([a, b], ([a, b]) => fetcher);
     // Catatan: Key yang paling depan kalo itu url, bisa dipake untuk API call.
     // Contoh: useSWR("https://google.com", (url) => axios.get(url).then((res) => res.data).catch((error) => console.log(error)))
-    const { data: todos, mutate, isLoading, error } = useSWR(`/todos?_limit=5&_page=${page}`, (url) => BaseUrl.get(url).then((data) => console.log(data)));
+    const { data: todos, mutate, isLoading, error } = useSWR([null, page], ([url, page]) => getTodosDataList(page));
 
     const onSubmit = async (formData: CreateOrUpdateTodoModel) => {
         try {
