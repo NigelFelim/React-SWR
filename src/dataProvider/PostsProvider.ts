@@ -1,9 +1,9 @@
 import { AxiosResponse } from "axios";
 import BaseUrl from "./BaseUrl";
-import { GetPostsListModelPack } from "../model/posts/GetPostsListModel";
+import { GetPostsListModelData, GetPostsListModelPack } from "../model/posts/GetPostsListModel";
 import CreateOrUpdatePostModel from "../model/posts/CreateOrUpdatePostModel";
 
-const delay = () => new Promise<void>(res => setTimeout(() => res(), 1000))
+const delay = () => new Promise<void>(res => setTimeout(() => res(), 5000))
 
 const PostsProvider = {
     getList: async () => {
@@ -26,9 +26,14 @@ const PostsProvider = {
         if (Math.random() < 0.5) return Promise.reject("Gagal Menambahkan Data")
 
         try {
-            await BaseUrl.post("/posts", newData);
+            const result: AxiosResponse = await BaseUrl.post("/posts", newData);
 
-            return Promise.resolve();
+            const resultData: GetPostsListModelData = new GetPostsListModelData(result);
+
+            console.log(result);
+            console.log(resultData);
+
+            return Promise.resolve(resultData);
         } catch (error) {
             return Promise.reject(error)
         }
