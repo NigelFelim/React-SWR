@@ -20,7 +20,10 @@ const useGetPostsList = () => {
             
             setGetLoading(false);
 
-            return Promise.resolve(resultData.data)
+            return Promise.resolve(resultData.data.sort((a, b) => b.id - a.id))
+
+            // Pakai kode dibawah jka tidak sort
+            // return Promise.resolve(resultData.data)
         } catch (error) {
             setPostsData([]);
             setGetError(error);

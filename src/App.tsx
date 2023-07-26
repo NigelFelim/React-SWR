@@ -6,6 +6,7 @@ import PostsPage from "./features/posts/components/PostsPage"
 import { useEffect } from "react"
 import { AuthenticationProvider } from "./dataProvider/AuthProvider"
 import UsersPage from "./features/users/components/UsersPage"
+import PostsPageInfinity from "./features/posts_infinite_loading/components/PostsPageInfinity"
 
 function App() {
   const login = () => {
@@ -31,6 +32,7 @@ function App() {
         <Route path="todos" element={<TodosPage />} />
         <Route path="posts" element={<PostsPage />} />
         <Route path="users" element={<UsersPage />} />
+        <Route path="posts-infinity" element={<PostsPageInfinity />} />
       </Route>
     </Routes>
   )
