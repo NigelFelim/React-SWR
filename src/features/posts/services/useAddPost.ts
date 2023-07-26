@@ -48,8 +48,10 @@ export const addNewPostOptions = (newPost: CreateOrUpdatePostModel, oldPosts: Ge
             rollbackOnError: true,
             populateCache: true,
             revalidate: false
-            // "revalidate" di set false karena pada PostPage.tsx, data pada Get List sudah di revalidate ketika function
-            // add/update/delete selesai dieksekusi (baik gagal maupun berhasil)
+            // "revalidate" di set false karena pada ekspektasi jika berhasil menambahkan data adalah hasilnya sama dengan optimistic
+            // data yang kita set, jadi data tidak perlu di revalidate lagi. Untuk add, data yang baru ditambah pasti sudah ada id).
+            // Untuk update, misal ada form dalam dialog untuk update, setelah diupdate maka kalau buka dialog lagi akan otomatis
+            // terupdate default valuenya dengan default value data yang terbaru
         };
     }
     
@@ -58,8 +60,10 @@ export const addNewPostOptions = (newPost: CreateOrUpdatePostModel, oldPosts: Ge
         rollbackOnError: true,
         populateCache: true,
         revalidate: false
-        // "revalidate" di set false karena pada PostPage.tsx, data pada Get List sudah di revalidate ketika function
-        // add/update/delete selesai dieksekusi (baik gagal maupun berhasil)
+        // "revalidate" di set false karena pada ekspektasi jika berhasil menambahkan data adalah hasilnya sama dengan optimistic
+        // data yang kita set, jadi data tidak perlu di revalidate lagi. Untuk add, data yang baru ditambah pasti sudah ada id).
+        // Untuk update, misal ada form dalam dialog untuk update, setelah diupdate maka kalau buka dialog lagi akan otomatis
+        // terupdate default valuenya dengan default value data yang terbaru
     };
 }
 
