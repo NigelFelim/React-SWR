@@ -20,6 +20,11 @@ const DashboardPage: React.FC = () => {
                     </div>
                 </div>
             </div>
+            <div onClick={() => navigate("/users")} className="my-4 w-full h-[350px] bg-userBg bg-cover border border-solid shadow-2xl cursor-pointer rounded-md">
+                <div className="flex items-center justify-center h-full bg-black bg-opacity-70">
+                    <p className="text-white font-bold text-4xl px-3 text-center">User List Page</p>
+                </div>
+            </div>
         </div>
     );
 }

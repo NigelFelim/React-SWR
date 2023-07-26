@@ -8,7 +8,8 @@ export default {
     extend: {
       backgroundImage: {
         todoBg: "url(assets/todo.jpg)",
-        postBg: "url(assets/post.jpg)"
+        postBg: "url(assets/post.jpg)",
+        userBg: "url(assets/user.jpg)",
       },
       animation: {
         fade: 'fadeOut 5s linear', // Bisa pakai ease-in-out juga untuk gantinya linear
