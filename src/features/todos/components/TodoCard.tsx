@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { GetTodosListModelData } from "../../../model/todos/GetTodosListModel";
 import { MdCheckCircle, MdCancel } from "react-icons/md";
 import Alert from "../../../components/Alert";
@@ -10,6 +10,7 @@ import useGetTodosList from "../services/useGetTodosList";
 import useSWR from "swr";
 import useUpdateTodo, { updateTodoOptions } from "../services/useUpdateTodo";
 import useDeleteTodo, { deleteTodoOptions } from "../services/useDeleteTodo";
+import ToDoContext from "../context/ToDoContext";
 
 interface Props {
     key: any;
@@ -20,12 +21,16 @@ const TodoCard: React.FC<Props> = (props) => {
     const [openDialog, setOpenDialog] = useState<boolean>(false);
     const [openFailedAlert, setOpenFailedAlert] = useState<boolean>(false);
     const [openSuccessAlert, setOpenSuccessAlert] = useState<boolean>(false);
+    const [openFailedDeleteAlert, setOpenFailedDeleteAlert] = useState<boolean>(false);
+    const [openSuccessDeleteAlert, setOpenSuccessDeleteAlert] = useState<boolean>(false);
 
     const { getTodosDataList } = useGetTodosList();
     const { updateTodo } = useUpdateTodo();
     const { deleteTodo } = useDeleteTodo();
 
-    const { data: todos, mutate } = useSWR("/todos", getTodosDataList);
+    const { page, setPage } = useContext(ToDoContext);
+
+    const { data: todos, mutate } = useSWR(`/todos?_limit=5&_page=${page}`, () => getTodosDataList(page));
 
     const handleSubmit = async (formData: CreateOrUpdateTodoModel) => {
         try {
@@ -52,10 +57,11 @@ const TodoCard: React.FC<Props> = (props) => {
                 deleteTodoOptions(props.data.id, todos),
             );
 
-            setOpenSuccessAlert(true);
+            setOpenSuccessDeleteAlert(true);
+            setTimeout(() => setPage(1), 5000)
         } catch (error) {
             setOpenDialog(false);
-            setOpenFailedAlert(true);
+            setOpenFailedDeleteAlert(true);
         }
     }
 
@@ -78,9 +84,13 @@ const TodoCard: React.FC<Props> = (props) => {
 
         <TodoForm open={openDialog} data={props.data} dialogTitle="Update To Do" onClose={() => setOpenDialog(false)} onSubmit={handleSubmit} />
 
-        <Alert open={openFailedAlert} handleClose={() => setOpenFailedAlert(false)} title="Gagal" content="Gagal Mengubah/Menghapus Data" />
+        <Alert open={openFailedAlert} handleClose={() => setOpenFailedAlert(false)} title="Gagal" content="Gagal Mengubah Data" />
 
-        <SuccessAlert open={openSuccessAlert} handleClose={() => setOpenSuccessAlert(false)} title="Sukses" content="Berhasil Mengubah/Menghapus Data" />
+        <SuccessAlert open={openSuccessAlert} handleClose={() => setOpenSuccessAlert(false)} title="Sukses" content="Berhasil Mengubah Data" />
+
+        <Alert open={openFailedDeleteAlert} handleClose={() => setOpenFailedDeleteAlert(false)} title="Gagal" content="Gagal Menghapus Data" />
+
+        <SuccessAlert open={openSuccessDeleteAlert} handleClose={() => setOpenSuccessDeleteAlert(false)} title="Sukses" content={`Berhasil Menghapus Data. Anda akan dialihkan ke halaman 1 dalam 5 detik`} />
         </>
     );
 }
