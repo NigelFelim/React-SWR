@@ -20,7 +20,7 @@ const useGetPostsListInfinite = () => {
             
             setGetLoading(false);
 
-            return Promise.resolve(resultData.data.sort((a, b) => b.id - a.id))
+            return Promise.resolve(resultData.data)
         } catch (error) {
             setPostsData([]);
             setGetError(error);

@@ -6,7 +6,7 @@ import Alert from "../../../components/Alert";
 // import useSWR from "swr";
 import SuccessAlert from "../../../components/SuccessAlert";
 import useGetPostsListInfinite from "../services/useGetPostsListInfinite";
-import useAddPostInfinite, { addNewPostinfiniteOptions } from "../services/useAddPostInfinite";
+import useAddPostInfinite, { addNewPostInfiniteOptions } from "../services/useAddPostInfinite";
 import useSWRInfinite from "swr/infinite";
 import { GetPostsListModelData } from "../../../model/posts/GetPostsListModel";
 
@@ -32,6 +32,7 @@ const PostsPageInfinity: React.FC = () => {
     const [page, setPage] = useState<number>(size);
 
     const allData: GetPostsListModelData[] = posts ? [].concat(...posts) : [];
+    allData.sort((a, b) => b.id - a.id);
 
     const onSubmit = async (formData: CreateOrUpdatePostModel) => {
         try {

@@ -34,7 +34,7 @@ const useAddPostInfinite = () => {
     return { addLoading, addError, addNewPostInfinite }
 }
 
-export const addNewPostinfiniteOptions = (newPost: CreateOrUpdatePostModel, oldPosts: GetPostsListModelData[] | undefined): MutatorOptions => {
+export const addNewPostInfiniteOptions = (newPost: CreateOrUpdatePostModel, oldPosts: GetPostsListModelData[] | undefined): MutatorOptions => {
     if (!oldPosts) {
         return {
             optimisticData: [newPost],
