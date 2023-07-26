@@ -29,6 +29,17 @@ const PostsProvider = {
             return Promise.reject(error)
         }
     },
+    getListDropdown: async (searchParam: string) => {
+        try {
+            const result: AxiosResponse = await BaseUrl.get(`/posts?q=${searchParam}`);
+        
+            const postsData: GetPostsListModelPack = new GetPostsListModelPack(result);
+
+            return Promise.resolve(postsData);
+        } catch (error) {
+            return Promise.reject(error)
+        }
+    },
     addNewPost: async (newData: CreateOrUpdatePostModel) => {
         await delay();
 

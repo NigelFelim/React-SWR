@@ -7,6 +7,7 @@ import useAddPost, { addNewPostOptions } from "../services/useAddPost";
 import Alert from "../../../components/Alert";
 import useSWR from "swr";
 import SuccessAlert from "../../../components/SuccessAlert";
+import useGetPostsListDropdown from "../services/useGetPostsListDropdown";
 
 const PostsPage: React.FC = () => {
     const { addNewPost } = useAddPost();
@@ -14,8 +15,12 @@ const PostsPage: React.FC = () => {
     const [openDialog, setOpenDialog] = useState<boolean>(false);
     const [openFailedAlert, setOpenFailedAlert] = useState<boolean>(false);
     const [openSuccessAlert, setOpenSuccessAlert] = useState<boolean>(false);
+    const [renderDropdown, setRenderDropdown] = useState<boolean>(false);
+    const [searchValue, setSearchValue] = useState<string>("");
+
 
     const { getPostsListData } = useGetPostsList();
+    const { getPostsListDataDropdown } = useGetPostsListDropdown();
 
     // Umumnya ini adalah function Get List karena setelah sukses Add/Update/Delete akan meng-update si List
     // Intinya ini hooks untuk handle Data Fetching
@@ -26,6 +31,8 @@ const PostsPage: React.FC = () => {
 
     // Ada pula hook useSWRMutation. Bedanya dengan useSWR dan useSWRConfig adalah hook ini di trigger manual dengan fungsi trigger
     // yang disediakan useSWRMutation dan bisa diakses dengan melakukan destructured
+
+    const { data: dropdownData } = useSWR(renderDropdown ? `/posts?q=${searchValue}` : null, () => getPostsListDataDropdown(searchValue));
 
     const onSubmit = async (formData: CreateOrUpdatePostModel) => {
         try {
@@ -48,7 +55,22 @@ const PostsPage: React.FC = () => {
         <div className="p-10">
             <p className="text-4xl font-bold mb-9">Posts Page</p>
             <div className="flex flex-row-reverse w-full mb-7">
+                <button type="button" className="bg-blue-800 text-white" onClick={() => setRenderDropdown(!renderDropdown)}>Test Conditional</button>
                 <button type="button" className="bg-blue-800 text-white" onClick={() => setOpenDialog(true)}>Add New To Do</button>
+            </div>
+            <div>
+                <input placeholder="Search" onChange={(e) => setSearchValue(e.target.value)} />
+                <select className="w-full h-12 px-2 border-solid border border-slate-950 rounded-lg">
+                    {
+                        !dropdownData || dropdownData.length === 0 &&
+                        <option hidden disabled selected> -- Data Tidak Ditemukan -- </option>
+                    }
+                    {
+                        dropdownData && dropdownData.length > 0 && dropdownData.map((item, index) => 
+                            <option key={index} value={item.title}>{item.title}</option>
+                        )
+                    }
+                </select>
             </div>
             <div className="overflow-auto h-[62vh]">
                 {
