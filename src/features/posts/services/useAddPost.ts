@@ -56,6 +56,8 @@ export const addNewPostOptions = (newPost: CreateOrUpdatePostModel, oldPosts: Ge
     }
     
     return {
+        // Buat sort terbalik kalo belom ada IDnya
+        // optimisticData: [...oldPosts, newPost].sort(() => -1),
         optimisticData: [...oldPosts, newPost],
         rollbackOnError: true,
         populateCache: true,
