@@ -24,10 +24,13 @@ const PostCard: React.FC<Props> = (props) => {
     const { deletePost } = useDeletePost();
     const { updatePost } = useUpdatePost();
 
+    // Selain pakai yang sekarang, bisa juga pakai useSWRConfig. Ambil "mutate" nya aja
     const { data: posts, mutate } = useSWR("/posts", getPostsListData)
 
     const handleDeleteData = async () => {
         try {
+            // Cara pakai "mutate" kalau dari useSWRConfig sama seperti yang diapaki sekarang, bedanya adalah sebelum data (function)
+            // perlu dikasih key dari cache mana yang bersangkutan
             await mutate(
                 deletePost(props.data.id, posts),
                 deletePostOptions(props.data.id, posts),
