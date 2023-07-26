@@ -7,6 +7,9 @@ import Alert from "../../../components/Alert";
 import SuccessAlert from "../../../components/SuccessAlert";
 import useSWR from "swr";
 import useAddTodo, { addNewTodoOptions } from "../services/useAddTodo";import ToDoContext from "../context/ToDoContext";
+import useUpdateTodo, { updateTodoOptions } from "../services/useUpdateTodo";
+import useDeleteTodo, { deleteTodoOptions } from "../services/useDeleteTodo";
+import useSnackbar from "../../../components/useSnackbar";
 
 const TodosPage: React.FC = () => {
     const [openDialog, setOpenDialog] = useState<boolean>(false);
@@ -16,6 +19,10 @@ const TodosPage: React.FC = () => {
 
     const { getTodosDataList } = useGetTodosList();
     const { addNewTodo } = useAddTodo();
+    const { updateTodo } = useUpdateTodo();
+    const { deleteTodo } = useDeleteTodo();
+
+    const { showNotification, NOTIFICATION_TYPE } = useSnackbar();
 
     // Contoh dibawah ini adalah kalau mau dipakai buat pagination. Kalau ada argument lain dibagian key,
     // maka keynya jadi list dan di functionnya juga list
@@ -42,6 +49,34 @@ const TodosPage: React.FC = () => {
         }
     }
 
+    const handleSubmitUpdate = async (id: number, formData: CreateOrUpdateTodoModel) => {
+        try {
+            await mutate(
+                updateTodo(id, formData, todos),
+                updateTodoOptions(id, formData, todos)
+            );
+
+            showNotification(NOTIFICATION_TYPE.SUCCESS, "Berhasil Mengubah Data");
+        } catch (error) {
+            showNotification(NOTIFICATION_TYPE.ERROR, "Gagal Mengubah Data");
+        }
+    }
+
+    const handleDeleteData = async (id: number) => {
+        try {
+            await mutate(
+                deleteTodo(id, todos),
+                deleteTodoOptions(id, todos),
+            );
+
+            showNotification(NOTIFICATION_TYPE.SUCCESS, "Berhasil Menghapus Data");
+            
+            // setTimeout(() => setPage(1), 5000)
+        } catch (error) {
+            showNotification(NOTIFICATION_TYPE.ERROR, "Gagal Menghapus Data");
+        }
+    }
+
     return (
         <>
         <ToDoContext.Provider value={{ page: page, setPage: setPage }}>
@@ -56,7 +91,7 @@ const TodosPage: React.FC = () => {
                     <div className="overflow-auto h-[62vh]">
                     {
                         todos && todos.length > 0 && todos.map((item, index) => 
-                            <TodoCard key={index} data={item} />
+                            <TodoCard key={index} data={item} onDelete={handleDeleteData} onSubmitUpdate={handleSubmitUpdate} />
                         )
                     }
                 </div>
@@ -72,7 +107,7 @@ const TodosPage: React.FC = () => {
 
         <Alert open={openFailedAlert} handleClose={() => setOpenFailedAlert(false)} title="Gagal" content="Gagal Menambahkan Data" />
 
-        <SuccessAlert open={openSuccessAlert} handleClose={() => setOpenSuccessAlert(false)} title="Berhasil" content="Berhasil Menambahkan Data" />
+        <SuccessAlert open={openSuccessAlert} handleClose={() => setOpenSuccessAlert(false)} title="Berhasil" content="Berhasil Menambahkan Data. Anda akan dialihkan ke halaman 1 dalam 5 detik" />
         </>
     );
 }
