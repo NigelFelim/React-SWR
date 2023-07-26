@@ -40,15 +40,23 @@ export const deleteTodoOptions = (id: number, oldTodos: GetTodosListModelData[] 
             optimisticData: [] as GetTodosListModelData[],
             rollbackOnError: true,
             populateCache: true,
-            revalidate: false,
+            revalidate: true,
         }
+        // "revalidate" di set true jika halaman menggunakan pagination dan function yang dipanggil mengubah data dalam page yang
+        // sedang dibuka sekarang. Misal pada function delete, jika pada page 5 ada 10 data lalu dihapus 1, jika tidak di revalidate
+        // maka data pada page 5 sisa 9 (data pada page 6 tidak ada yang naik padahal seharusnya 1 data pada page 6 naik ke page 5).
+        // Untuk revalidate dan merefresh ulang cache inilah revalidate di set dengan true
     } else {
         return {
             optimisticData: oldTodos.filter(item => item.id !== id),
             rollbackOnError: true,
             populateCache: true,
-            revalidate: false,
+            revalidate: true,
         }
+        // "revalidate" di set true jika halaman menggunakan pagination dan function yang dipanggil mengubah data dalam page yang
+        // sedang dibuka sekarang. Misal pada function delete, jika pada page 5 ada 10 data lalu dihapus 1, jika tidak di revalidate
+        // maka data pada page 5 sisa 9 (data pada page 6 tidak ada yang naik padahal seharusnya 1 data pada page 6 naik ke page 5).
+        // Untuk revalidate dan merefresh ulang cache inilah revalidate di set dengan true
     }
 }
 
