@@ -6,12 +6,12 @@ import Alert from "../../../components/Alert";
 // import useSWR from "swr";
 import SuccessAlert from "../../../components/SuccessAlert";
 import useGetPostsListInfinite from "../services/useGetPostsListInfinite";
-import useAddPost, { addNewPostInfiniteOptions } from "../services/useAddPostInfinite";
+import useAddPostInfinite, { addNewPostinfiniteOptions } from "../services/useAddPostInfinite";
 import useSWRInfinite from "swr/infinite";
 import { GetPostsListModelData } from "../../../model/posts/GetPostsListModel";
 
 const PostsPageInfinity: React.FC = () => {
-    const { addNewPostInfinite } = useAddPost();
+    const { addNewPostInfinite } = useAddPostInfinite();
 
     const [openDialog, setOpenDialog] = useState<boolean>(false);
     const [openFailedAlert, setOpenFailedAlert] = useState<boolean>(false);
