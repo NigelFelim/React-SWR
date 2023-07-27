@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import useGetPostsListDropdown from "../../posts/services/useGetPostsListDropdown";
+import useGetPostsListDropdown from "../services/useGetPostsListDropdown";
 import useSWR from "swr";
 
 const ConditionalFetchPage: React.FC = () => {
