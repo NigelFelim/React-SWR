@@ -48,7 +48,7 @@ const PostsPage: React.FC = () => {
         <div className="p-10">
             <p className="text-4xl font-bold mb-9">Posts Page</p>
             <div className="flex flex-row-reverse w-full mb-7">
-                <button type="button" className="bg-blue-800 text-white" onClick={() => setOpenDialog(true)}>Add New To Do</button>
+                <button type="button" className="bg-blue-800 text-white" onClick={() => setOpenDialog(true)}>Add New Post</button>
             </div>
             <div className="overflow-auto h-[62vh]">
                 {
