@@ -25,6 +25,11 @@ const DashboardPage: React.FC = () => {
                     <p className="text-white font-bold text-4xl px-3 text-center">Post Infinite List Page</p>
                 </div>
             </div>
+            <div onClick={() => navigate("/conditional-fetch")} className="my-4 w-full h-[350px] bg-userBg bg-cover border border-solid shadow-2xl cursor-pointer rounded-md">
+                <div className="flex items-center justify-center h-full bg-black bg-opacity-70">
+                    <p className="text-white font-bold text-4xl px-3 text-center">Conditional Fetch Page</p>
+                </div>
+            </div>
         </div>
     );
 }

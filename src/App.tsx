@@ -6,6 +6,7 @@ import PostsPage from "./features/posts/components/PostsPage"
 import { useEffect } from "react"
 import { AuthenticationProvider } from "./dataProvider/AuthProvider"
 import PostsPageInfinity from "./features/posts_infinite_loading/components/PostsPageInfinity"
+import ConditionalFetchPage from "./features/conditional_fetch/components/ConditionalFetchPage"
 
 function App() {
   const login = () => {
@@ -31,6 +32,7 @@ function App() {
         <Route path="todos" element={<TodosPage />} />
         <Route path="posts" element={<PostsPage />} />
         <Route path="posts-infinity" element={<PostsPageInfinity />} />
+        <Route path="conditional-fetch" element={<ConditionalFetchPage />} />
       </Route>
     </Routes>
   )
