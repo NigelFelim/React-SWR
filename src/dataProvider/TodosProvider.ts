@@ -3,7 +3,7 @@ import { GetTodosListModelData, GetTodosListModelPack } from "../model/todos/Get
 import BaseUrl from "./BaseUrl";
 import CreateOrUpdateTodoModel from "../model/todos/CreateOrUpdateTodoModel";
 
-const delay = () => new Promise<void>(res => setTimeout(() => res(), 5000))
+const delay = () => new Promise<void>(res => setTimeout(() => res(), 3000))
 
 const TodosProvider = {
     getList: async (page: number) => {

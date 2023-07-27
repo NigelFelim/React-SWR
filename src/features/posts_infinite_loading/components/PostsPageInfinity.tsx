@@ -36,16 +36,17 @@ const PostsPageInfinity: React.FC = () => {
 
     const onSubmit = async (formData: CreateOrUpdatePostModel) => {
         try {
-            setOpenDialog(false);
+            // setOpenDialog(false);
 
             await mutate(
                 addNewPostInfinite(formData, allData),
                 addNewPostInfiniteOptions(formData, allData),
             );
 
+            setOpenDialog(false);
             setOpenSuccessAlert(true);
         } catch (error) {
-            setOpenDialog(false);
+            // setOpenDialog(false);
             setOpenFailedAlert(true);
         }
     }
