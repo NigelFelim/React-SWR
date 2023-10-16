@@ -1,9 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ProjectNotesList from "./ProjectNotesList";
 import { useNavigate } from "react-router-dom";
+import { db } from "../../indexedDB_test/services/dexieDbService";
 
 const DashboardPage: React.FC = () => {
     const navigate = useNavigate();
+
+    useEffect(() => {
+        testGetData()
+    }, [])
+
+    const testGetData = async () => {
+        const data = await db.test123.toArray()
+
+        console.log(data)
+    }
 
     return (
         <div className="p-10">

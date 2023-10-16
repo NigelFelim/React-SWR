@@ -1,7 +1,7 @@
-interface ToDoModel {
+interface ToDoAddModel {
     id: number;
     title: string;
     content: string;
 }
 
-export default ToDoModel;
+export default ToDoAddModel;
